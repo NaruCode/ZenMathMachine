@@ -1,9 +1,9 @@
 package modes;
-import flixel.util.FlxRandom;
+import flixel.FlxG;
 
 /**
- * ...
  * @author Ohmnivore
+ * Port by NaxeCode
  */
 class Division extends BaseMode {
 	
@@ -26,8 +26,8 @@ class Division extends BaseMode {
 			var n1:Int;
 			var n2:Int;
 			do {
-				n1 = getOperand(FlxRandom.intRanged(1, 2));
-				n2 = getOperand(FlxRandom.intRanged(1, 2));
+				n1 = getOperand(FlxG.random.int(1, 2));
+				n2 = getOperand(FlxG.random.int(1, 2));
 			} while (n1 == n1 * n2 || n2 == n1 * n2 || n1 * n2 > 100);
 			answer = n1;
 			return [n1 * n2, n2];
@@ -36,8 +36,8 @@ class Division extends BaseMode {
 			var n1:Int;
 			var n2:Int;
 			do {
-				n1 = getOperand(FlxRandom.intRanged(1, 2));
-				n2 = getOperand(FlxRandom.intRanged(1, 2));
+				n1 = getOperand(FlxG.random.int(1, 2));
+				n2 = getOperand(FlxG.random.int(1, 2));
 			} while (n1 == n1 * n2 || n2 == n1 * n2 || n1 * n2 > 200);
 			answer = n1;
 			return [n1 * n2, n2];
@@ -47,7 +47,7 @@ class Division extends BaseMode {
 			var n2:Int;
 			do {
 				n1 = getOperand(2);
-				n2 = getOperand(FlxRandom.intRanged(1, 2));
+				n2 = getOperand(FlxG.random.int(1, 2));
 			} while (n1 == n1 * n2 || n2 == n1 * n2 || n1 * n2 > 1000);
 			answer = n1;
 			return [n1 * n2, n2];
@@ -66,10 +66,10 @@ class Division extends BaseMode {
 	
 	private function getOperand(Digits:Int):Int {
 		if (Digits == 1)
-			return FlxRandom.intRanged(1, 9);
+			return FlxG.random.int(1, 9);
 		else if (Digits == 2)
-			return FlxRandom.intRanged(10, 99);
+			return FlxG.random.int(10, 99);
 		else
-			return FlxRandom.intRanged(100, 999);
+			return FlxG.random.int(100, 999);
 	}
 }

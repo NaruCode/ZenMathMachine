@@ -1,80 +1,54 @@
 package;
+
 import ents.MenuKeyPad;
-import ents.NumText;
 import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.system.scaleModes.PixelPerfectScaleMode;
-import flixel.tweens.FlxTween;
+import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
-import modes.*;
+import flixel.tweens.FlxTween;
+import flixel.ui.FlxButton;
+import flixel.math.FlxMath;
+import modes.Addition;
+import modes.Division;
+import modes.Multiplication;
+import modes.Substraction;
 
-/**
- * ...
- * @author Ohmnivore
- */
 class MenuState extends FlxState {
 	
 	private var skipintro:Bool;
 	private var keypad:MenuKeyPad;
 	
-	public function new(SkipIntro:Bool = false) {
+	public function new(SkipIntro:Bool = false):Void {
 		skipintro = SkipIntro;
 		super();
 	}
-	
 	override public function create():Void {
 		super.create();
-		Reg.loadPalette();
-		Reg.loadDifficulty();
+		Reg.loadPalette(); // Loads palette from Reg.
+		Reg.loadDifficulty(); // Loads difficulty from Reg.
 		#if debug
-		Reg.initDebug();
-		#end
-		//ChallengeCounter.init();
+		Reg.initDebug(); // Sets up earased command if in debug mode.
+		#end //ChallengeCounter.init();
 		
-		FlxG.camera.bgColor = Reg.color.bg;
-		FlxG.scaleMode = new PixelPerfectScaleMode();
-		FlxG.mouse.load("assets/images/cursor.png", 1);
+		FlxG.camera.bgColor = Reg.color.bg; // Set background color from Reg.
+		FlxG.scaleMode = new PixelPerfectScaleMode(); // Set scale mode to pixel perfect.
+		FlxG.mouse.load("assets/images/cursor.png", 1); // Load mouse cursor graphic.
 		
 		keypad = new MenuKeyPad(0, 0);
 		add(keypad);
 		keypad.onKey = onKey;
-		if (skipintro)
-			keypad.y = 40;
+		
+		if (skipintro) keypad.y = 40;
 		else {
 			keypad.y = FlxG.height;
 			FlxTween.tween(keypad, {"y": 40}, 0.7, {ease: FlxEase.elasticOut});
 		}
-		
-		//var plus:NumText = new NumText(0, 0, ChallengeCounter.getString("+"));
-		//add(plus);
-		//plus.x = 120 - 72 - 4 + (72 - plus.getWidth());
-		//plus.y = 80 - 18;
-		//
-		//var minus:NumText = new NumText(0, 0, ChallengeCounter.getString("-"));
-		//add(minus);
-		//minus.x = 120 - 72 - 4 + (72 - minus.getWidth());
-		//minus.y = 160 - 18;
-		//
-		//var mult:NumText = new NumText(0, 0, ChallengeCounter.getString("*"));
-		//add(mult);
-		//mult.x = 200 + 4 + (72 - mult.getWidth());
-		//mult.y = 320 - 18;
-		//
-		//var div:NumText = new NumText(0, 0, ChallengeCounter.getString("/"));
-		//add(div);
-		//div.x = 200 + 4 + (72 - div.getWidth());
-		//div.y = 400 - 18;
-		//
-		//if (!skipintro) {
-			//for (w in [plus, minus, mult, div]) {
-				//w.y += 440;
-				//FlxTween.tween(w, {"y": w.y - 440}, 0.7, {ease: FlxEase.elasticOut});
-			//}
-		//}
 	}
-	
-	override public function update():Void {
-		super.update();
+
+	override public function update(elapsed:Float):Void {
+		super.update(elapsed);
 		keypad.setDifficulty(Reg.difficulty);
 	}
 	
@@ -82,35 +56,27 @@ class MenuState extends FlxState {
 		if (Char == "+") {
 			Reg.mode = Addition;
 			openChallenge();
-		}
-		else if (Char == "-") {
+		} else if (Char == "-") {
 			Reg.mode = Substraction;
 			openChallenge();
-		}
-		else if (Char == "*") {
+		} else if (Char == "*") {
 			Reg.mode = Multiplication;
 			openChallenge();
-		}
-		else if (Char == "/") {
+		} else if (Char == "/") {
 			Reg.mode = Division;
 			openChallenge();
-		}
-		else if (Char == "%") {
+		} else if (Char == "%") {
 			Reg.isDark = !Reg.isDark;
 			Reg.savePalette();
 			FlxG.switchState(new MenuState(true));
-		}
-		else if (Char == "[" || Char == "]" || Char == "{" || Char == "}" || Char == "(") {
+		} else if (Char == "[" || Char == "]" || Char == "{" || Char == "}" || Char == "(") 
 			Reg.addDifficulty();
-		}
-		else if (Char == "@") {
-			FlxG.openURL("https://twitter.com/4_AM_Games");
-		}
+		else if (Char == "@") FlxG.openURL("https://twitter.com/4_AM_Games");
 	}
 	
 	private function openChallenge():Void {
 		for (m in members) {
-			untyped FlxTween.tween(m, {"y": m.y - 440}, 0.3, {ease: FlxEase.backIn, complete:
+			untyped FlxTween.tween(m, { y: m.y - 440 }, 0.3, { type: FlxTween.PINGPONG, ease: FlxEase.backIn, onComplete: 
 				function(T:FlxTween) {
 					FlxTween.manager.clear();
 					FlxG.switchState(new PlayState());

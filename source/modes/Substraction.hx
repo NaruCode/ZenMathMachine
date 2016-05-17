@@ -1,5 +1,5 @@
 package modes;
-import flixel.util.FlxRandom;
+import flixel.FlxG;
 
 /**
  * ...
@@ -41,11 +41,11 @@ class Substraction extends BaseMode {
 		else if (Reg.difficulty == 1)
 			return 2;
 		else if (Reg.difficulty == 2)
-			return FlxRandom.intRanged(2, 3);
+			return FlxG.random.int(2, 3);
 		else if (Reg.difficulty == 3)
-			return FlxRandom.intRanged(2, 4);
+			return FlxG.random.int(2, 4);
 		else
-			return FlxRandom.intRanged(3, 4);
+			return FlxG.random.int(3, 4);
 	}
 	
 	private function getOperand():Int {
@@ -61,16 +61,16 @@ class Substraction extends BaseMode {
 		else
 			weights = [5, 10, 20, 35, 30];
 		
-		var digits:Int = FlxRandom.weightedPick(weights) + 1;
+		var digits:Float = FlxG.random.getObject(weights) + 1;
 		if (digits == 1)
-			return FlxRandom.intRanged(1, 9);
+			return FlxG.random.int(1, 9);
 		else if (digits == 2)
-			return FlxRandom.intRanged(10, 99);
+			return FlxG.random.int(10, 99);
 		else if (digits == 3)
-			return FlxRandom.intRanged(100, 999);
+			return FlxG.random.int(100, 999);
 		else if (digits == 4)
-			return FlxRandom.intRanged(1000, 9999);
+			return FlxG.random.int(1000, 9999);
 		else
-			return FlxRandom.intRanged(10000, 99999);
+			return FlxG.random.int(10000, 99999);
 	}
 }

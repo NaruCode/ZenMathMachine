@@ -54,7 +54,7 @@ class Reg {
 	static public var hintShown:Bool = false;
 	
 	static public function initDebug():Void {
-		FlxG.console.addCommand(["es"], eraseSave);
+		FlxG.console.registerFunction("es", eraseSave);
 	}
 	static private function eraseSave():Void {
 		FlxG.save.bind(SAVE_ID);

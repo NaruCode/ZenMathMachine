@@ -4,8 +4,8 @@ import ents.ResultBar;
 import flixel.group.FlxGroup;
 
 /**
- * ...
  * @author Ohmnivore
+ * Port by NaxeCode
  */
 class BaseMode extends FlxGroup {
 	
@@ -88,7 +88,7 @@ class BaseMode extends FlxGroup {
 			//ChallengeCounter.add(getOperator());
 	}
 	
-	override public function update():Void {
+	override public function update(elapsed:Float):Void {
 		var dx:Float = x - oldx;
 		var dy:Float = y - oldy;
 		
@@ -104,7 +104,7 @@ class BaseMode extends FlxGroup {
 		oldx = x;
 		oldy = y;
 		
-		super.update();
+		super.update(elapsed);
 	}
 	
 	private function getMaxWidth(Operands:Array<NumText>):Int {

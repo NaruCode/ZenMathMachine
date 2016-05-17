@@ -3,13 +3,13 @@ import ents.KeyPad.Key;
 import ents.NumText.NumTextChar;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.group.FlxTypedGroup;
+import flixel.group.FlxGroup;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 
 /**
- * ...
  * @author Ohmnivore
+ * Port by NaxeCode
  */
 class KeyPad extends FlxTypedGroup<Key> {
 	
@@ -42,8 +42,8 @@ class KeyPad extends FlxTypedGroup<Key> {
 		add(new Key(this, 240, 160, "*"));
 	}
 	
-	override public function update():Void {
-		super.update();
+	override public function update(elapsed:Float):Void {
+		super.update(elapsed);
 		
 		for (i in 0...members.length) {
 			var key:Key = members[i];
@@ -103,8 +103,8 @@ class Key extends FlxTypedGroup<FlxSprite> {
 		tweenPressedDone = false;
 	}
 	
-	override public function update():Void {
-		super.update();
+	override public function update(elapsed:Float):Void {
+		super.update(elapsed);
 		
 		bg.x = x + Reg.margin;
 		bg.y = y + Reg.margin;
@@ -122,11 +122,11 @@ class Key extends FlxTypedGroup<FlxSprite> {
 		}
 		else {
 			if (tweenPressedDone && (bgTween == null || bgTween.finished))
-				bgTween = FlxTween.color(bg, 0.33, bg.color, Reg.color.bg2, 1, 1,
-					{ease: FlxEase.cubeOut, complete: onTweenReleased});
+				bgTween = FlxTween.color(bg, 0.33, bg.color, Reg.color.bg2,
+					{ type: FlxTween.PINGPONG, ease: FlxEase.cubeOut, onComplete: onTweenReleased});
 			if (tweenPressedDone && (charTween == null || charTween.finished))
-				charTween = FlxTween.color(char, 0.33, char.color, Reg.color.num, 1, 1,
-					{ease: FlxEase.cubeOut, complete: onTweenReleased});
+				charTween = FlxTween.color(char, 0.33, char.color, Reg.color.num,
+					{ type: FlxTween.PINGPONG, ease: FlxEase.cubeOut, onComplete: onTweenReleased});
 		}
 	}
 }

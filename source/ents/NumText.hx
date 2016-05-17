@@ -1,5 +1,6 @@
 package ents;
-import flixel.group.FlxTypedGroup;
+import flixel.FlxBasic;
+import flixel.group.FlxGroup;
 import flixel.FlxSprite;
 
 /**
@@ -23,9 +24,11 @@ class NumText extends FlxTypedGroup<NumTextChar> {
 	public function setText(Text:String):Void {
 		if (Text != text) {
 			
-			callAll("kill");
-			callAll("destroy");
-			clear();
+			forEach(function(basic:FlxBasic) {
+				basic.kill();
+				basic.destroy();
+				clear();
+			});
 			
 			for (i in 0...Text.length) {
 				var c:String = Text.charAt(i);
@@ -53,14 +56,14 @@ class NumText extends FlxTypedGroup<NumTextChar> {
 			char.color = Color;
 	}
 	
-	override public function update():Void {
+	override public function update(elapsed:Float):Void {
 		for (i in 0...members.length) {
 			var char:NumTextChar = members[i];
 			char.x = Reg.fSize * i + x;
 			char.y = y;
 		}
 		
-		super.update();
+		super.update(elapsed);
 	}
 }
 

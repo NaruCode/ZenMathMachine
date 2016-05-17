@@ -1,16 +1,16 @@
 package;
 
-import ents.ColorPalette;
 import ents.HintArrow;
 import ents.KeyPad;
-import ents.NumText;
-import ents.ResultBar;
+import ents.MenuKeyPad;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.text.FlxText;
-import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.ui.FlxButton;
+import flixel.math.FlxMath;
 import flixel.util.FlxTimer;
 import modes.BaseMode;
 
@@ -58,7 +58,7 @@ class PlayState extends FlxState {
 		addChallenge();
 	}
 	
-	override public function update():Void {
+	override public function update(elapsed:Float):Void {
 		if (curTween.finished) {
 			if (FlxG.mouse.justPressed)
 				swipeBeginX = FlxG.mouse.x;
@@ -73,7 +73,7 @@ class PlayState extends FlxState {
 						curTween = FlxTween.tween(cur, {"x": curOriginalX}, 0.7, {ease: FlxEase.elasticOut});
 					else if (cur.inputIsValid()) {
 						curTween = FlxTween.tween(cur, {"y": -cur.height}, 0.3,
-							{ease: FlxEase.backIn, complete: onDoneChallenge});
+							{ease: FlxEase.backIn, onComplete: onDoneChallenge});
 						cur.submit();
 						targetx = FlxG.width - cur.width;
 					}
@@ -93,15 +93,16 @@ class PlayState extends FlxState {
 		if (curTween != null && curTween.ease == FlxEase.backIn) // temp solution
 			cur.x = cur.x * 0.65 + targetx * 0.35;
 		
-		super.update();
+		super.update(elapsed);
 		
 		if (FlxG.keys.justPressed.ESCAPE) {
 			FlxTween.manager.clear();
 			for (m in members)
 				untyped FlxTween.tween(m, {"y": m.y - FlxG.height}, 0.3, {ease: FlxEase.backIn});
-			new FlxTimer(0.3, function(T:FlxTimer) {
+			new FlxTimer().start(0.3, function(T:FlxTimer) {
 				FlxG.switchState(new MenuState());
 			});
 		}
 	}
 }
+	
